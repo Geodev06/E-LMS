@@ -1,0 +1,35 @@
+<?php
+
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BaseController;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+Route::controller(BaseController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+});
+
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/login', 'login')->name('login');
+    Route::get('/register', 'register')->name('register');
+
+    Route::post('/user-store', 'store_user')->name('user.store');
+    Route::post('/user-authenticate', 'auth_user')->name('user.auth');
+
+    Route::post('/user-logout', 'logout')->name('user.logout');
+
+});
+
+Route::controller(AdminController::class)->prefix('admin')->group(function () {
+    Route::get('/dashboard', 'dashboard')->name('admin.dashboard');
+})->middleware('auth');
