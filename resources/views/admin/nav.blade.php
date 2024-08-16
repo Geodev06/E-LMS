@@ -1,6 +1,11 @@
+<style>
+    .active-link {
+        color: white !important;
+    }
+</style>
 <nav>
     <ul class="metismenu" id="menu">
-        <li class="active">
+        <li class="">
             <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>dashboard</span></a>
             <ul class="collapse">
                 <li><a href="index.html">ICO dashboard</a></li>
@@ -17,8 +22,7 @@
                 <li><a href="index3-horizontalmenu.html">Horizontal Sidebar</a></li>
             </ul>
         </li>
-        <li><a href="maps.html"><i class="ti-map-alt"></i> <span>maps</span></a></li>
-        <li><a href="invoice.html"><i class="ti-receipt"></i> <span>Invoice Summary</span></a></li>
+        <li><a href="{{ route('admin.settings') }}" class="{{ Route::is('admin.settings') ? 'active-link' : '' }}"><i class="ti-settings {{ Route::is('admin.settings') ? 'active-link' : '' }}"></i> <span>Settings</span></a></li>
         
     </ul>
 </nav>

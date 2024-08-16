@@ -27,7 +27,7 @@ return new class extends Migration
 
         // Create a user after the table is created
         DB::table('users')->insert([
-            'name' => 'Adminstrator',
+            'name' => 'eyJpdiI6ImkwOTAyT1RQMmlwcjBqK0JwUFBacFE9PSIsInZhbHVlIjoiTXpHcHkyNFNwTHhqU1kxMzVOcEhDQT09IiwibWFjIjoiNTE2M2RiMmRlOTM0NWUwNThlZmQ3YmU4OWNiZGM2NTVjOGUwMTNiNDc2MTZkZGE4ZTg1YTRjY2YyZjhiZDM0MiIsInRhZyI6IiJ9',
             'email' => 'admin@example.com',
             'password' => Hash::make('Default@123'), // Replace 'password' with a strong password
             'role_code' => 'ADMIN',

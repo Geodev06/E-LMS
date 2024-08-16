@@ -1,4 +1,4 @@
-function sendAjaxRequest(url, method, data, beforeCallBack, successCallback, errorCallback) {
+function sendAjaxRequest(url, method, data, beforeCallBack = NULL, successCallback, errorCallback) {
     $.ajax({
         url: url,
         type: method, // 'GET', 'POST', etc.
@@ -21,3 +21,30 @@ function sendAjaxRequest(url, method, data, beforeCallBack, successCallback, err
         }
     });
 }
+
+function fileUploadRequest(url, formData, onSuccess, onError) {
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+           
+
+            if (typeof onSuccess === 'function') {
+                onSuccess(response);
+
+                window.open(response.file_url)
+            }
+        },
+        error: function(response) {
+         
+
+            if (typeof onError === 'function') {
+                onError(response);
+            }
+        }
+    });
+}
+

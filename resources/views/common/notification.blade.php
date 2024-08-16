@@ -1,6 +1,6 @@
-<link rel="stylesheet" href="assets/js/notif/style.css">
+<link rel="stylesheet" href="{{ asset('assets/js/notif/style.css') }}">
 <!-- modernizr css -->
-<script src="assets/js/notif/index.var.js"></script>
+<script src="{{ asset('assets/js/notif/index.var.js') }}"></script>
 
 <script>
     function showNotification(type, message, duration = 5000) {
