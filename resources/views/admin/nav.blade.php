@@ -14,12 +14,12 @@
             </ul>
         </li>
         <li>
-            <a href="javascript:void(0)" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>Sidebar
-                    Types
+            <a href="javascript:void(0)" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>Learning & Development
                 </span></a>
             <ul class="collapse">
-                <li><a href="index.html">Left Sidebar</a></li>
-                <li><a href="index3-horizontalmenu.html">Horizontal Sidebar</a></li>
+                <li><a href="{{ route('admin.courses') }}" class="{{ Route::is('admin.courses') ? 'active-link' : '' }}">Courses</a></li>
+                <li><a href="index.html">Students</a></li>
+
             </ul>
         </li>
         <li><a href="{{ route('admin.settings') }}" class="{{ Route::is('admin.settings') ? 'active-link' : '' }}"><i class="ti-settings {{ Route::is('admin.settings') ? 'active-link' : '' }}"></i> <span>Settings</span></a></li>

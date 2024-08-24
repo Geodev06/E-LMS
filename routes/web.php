@@ -31,23 +31,19 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/user-logout', 'logout')->name('user.logout');
 });
 
-Route::controller(AdminController::class)->prefix('admin')->group(function () {
-    Route::get('/dashboard', 'dashboard')->name('admin.dashboard');
-
-    /*
-    |--------------------------------------------------------------------------
-    | Settings Routes
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/settings', 'settings')->name('admin.settings');
-    Route::get('/site-settings', 'site_settings')->name('admin.site_settings');
-    Route::get('/audit-trail', 'audit_trail')->name('admin.audit_trail');
-    Route::get('/audit-trail-get', 'audit_trail_get')->name('admin.audit_trail_get');
-
-    Route::post('/site-settings-save', 'site_settings_save')->name('admin.site_settings_save');
-
-
-})->middleware('auth');
+Route::middleware('auth')->prefix('admin')->group(function () {
+    Route::controller(AdminController::class)->group(function () {
+        Route::get('/dashboard', 'dashboard')->name('admin.dashboard');
+        Route::get('/settings', 'settings')->name('admin.settings');
+        Route::get('/site-settings', 'site_settings')->name('admin.site_settings');
+        Route::get('/audit-trail', 'audit_trail')->name('admin.audit_trail');
+        Route::get('/audit-trail-get', 'audit_trail_get')->name('admin.audit_trail_get');
+        Route::post('/site-settings-save', 'site_settings_save')->name('admin.site_settings_save');
+        Route::get('/courses', 'courses')->name('admin.courses');
+        Route::get('/course-form', 'course_form')->name('admin.courses.form');
+        Route::get('/courses-get', 'courses_get')->name('admin.courses_get');
+    });
+});
 
 
 

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Constants;
 use App\Http\Requests\SitesettingRequest;
-use App\Models\Audit_trail;
 use App\Models\Systemsetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +20,28 @@ class AdminController extends Controller
 
     public function settings()
     {
-        return view('admin.settings');
+        $data = [
+            'bread_main' => 'Settings',
+        ];
+        return view('admin.settings', $data);
     }
 
+    public function courses()
+    {
+        $data = [
+            'bread_main' => 'Courses',
+        ];
+        return view('admin.courses', $data);
+    }
+
+    public function course_form()
+    {
+        $data = [
+            'bread_main' => 'Courses',
+            'bread_sub' => 'Add Course',
+        ];
+        return view('admin.courses.form', $data);
+    }
 
 
     public function site_settings()
@@ -115,7 +133,7 @@ class AdminController extends Controller
                     ]
                 );
 
-                Audit_trail::create([
+                $this->audit_log([
                     'content' => 'Change System name',
                     'activity' => !empty($oldSystemname) ? Constants::AUDIT_UPDATE : Constants::AUDIT_INSERT,
                     'prev_value' => !empty($oldSystemname) ? $oldSystemname : null,
@@ -123,7 +141,7 @@ class AdminController extends Controller
                     'created_by' => Auth::user()->id,
                 ]);
 
-                Audit_trail::create([
+                $this->audit_log([
                     'content' => 'Change System logo',
                     'activity' => !empty($oldLogoPath) ? Constants::AUDIT_UPDATE : Constants::AUDIT_INSERT,
                     'prev_value' => !empty($oldLogoPath) ? $oldLogoPath : null,
@@ -131,7 +149,7 @@ class AdminController extends Controller
                     'created_by' => Auth::user()->id,
                 ]);
 
-                Audit_trail::create([
+                $this->audit_log([
                     'content' => 'Change System banner',
                     'activity' => !empty($oldBannerPath) ? Constants::AUDIT_UPDATE : Constants::AUDIT_INSERT,
                     'prev_value' => !empty($oldBannerPath) ? $oldBannerPath : null,
@@ -167,7 +185,7 @@ class AdminController extends Controller
                     A.content,
                     A.prev_value,
                     A.current_value,
-                    A.created_at,
+                    DATE_FORMAT(A.created_at, '%m-%d-%Y %I:%i:%s %p') AS created_at,
                     B.email AS created_by
                 FROM audit_trails A
                 JOIN users B ON B.id = A.created_by
@@ -181,8 +199,8 @@ class AdminController extends Controller
             return DataTables::of($data)
                 ->addColumn('action', function ($data) {
                     // Customize the action column with buttons or links
-                    $btn_view = '<div class="icon-container text-center">
-                                    <span class="ti-eye"></span><span class="icon-name"></span>
+                    $btn_view = '<div class="text-center text-primary" >
+                                    <span class="ti-eye"></span>
                                 </div>';
                     return $btn_view;
                 })
@@ -210,7 +228,41 @@ class AdminController extends Controller
                     }
                     return $activity;
                 })
-                ->rawColumns(['action','activity']) // Specify which columns contain raw HTML
+                ->rawColumns(['action', 'activity']) // Specify which columns contain raw HTML
+                ->make(true);
+        }
+    }
+
+    public function courses_get(Request $request)
+    {
+
+        if ($request->ajax()) {
+            // Define the query as a plain string
+            $query = "
+            SELECT 
+                 id,
+                  course_name,
+                   course_code,
+                     description,
+                          IF(post_flag = 'Y','Posted','Draft') post_flag,
+                         IF(active_flag = 'Y','Active','Inactive') active_flag,
+                        DATE_FORMAT(created_at, '%m-%d-%Y %I:%i:%s %p') AS created_at
+                     FROM lms.courses;
+            ";
+
+            // Execute the raw SQL query
+            $data = DB::select($query);
+
+            // Pass the data to DataTables
+            return DataTables::of($data)
+                ->addColumn('action', function ($data) {
+                    // Customize the action column with buttons or links
+                    $btn_view = '<div class="text-center text-primary" >
+                                    <span class="ti-eye"></span>
+                                </div>';
+                    return $btn_view;
+                })
+                ->rawColumns(['action']) // Specify which columns contain raw HTML
                 ->make(true);
         }
     }

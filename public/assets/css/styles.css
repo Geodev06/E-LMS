@@ -2834,4 +2834,20 @@ table.dataTable thead td {
     color: #555;
 }
 
+.buttons-excel {
+    margin-bottom: 10px !important;
+    margin-top: 10px !important;
+    height: 40px !important;
+}
+
+
+.ellipsis {
+    white-space: nowrap;
+    /* Prevents the text from wrapping */
+    overflow: hidden;
+    /* Hides the text that overflows */
+    text-overflow: ellipsis;
+    /* Displays an ellipsis (...) for overflowing text */
+}
+
 /*-------------------- END Offset Sidebar ------------------- */

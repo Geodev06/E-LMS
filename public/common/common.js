@@ -48,7 +48,7 @@ function fileUploadRequest(url, formData, onSuccess, onError) {
     });
 }
 
-function loadTable(table_name, url, columns, col_order) {
+function loadTable(table_name, url, columns, columnDefs, col_order) {
     $(document).ready(function () {
 
         $(table_name).DataTable({
@@ -63,7 +63,9 @@ function loadTable(table_name, url, columns, col_order) {
 
                 "excel",
             ],
-            order: [[col_order, 'desc']]
+            order: [[col_order, 'desc']],
+            columnDefs:columnDefs,
+            autoWidth: false
 
         });
 

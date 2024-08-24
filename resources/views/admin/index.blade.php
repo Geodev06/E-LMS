@@ -39,8 +39,8 @@
             <!-- page title area start -->
             @include('admin.page-title-area')
             <!-- page title area end -->
-            <div class="main-content-inner">
-                <div class="row">
+            <div class="main-content-inner bg-white">
+                <div class="row bg-white">
                     @yield('content')
                 </div>
             </div>

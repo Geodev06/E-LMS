@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('audit_trails', function (Blueprint $table) {
+        Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->string('activity');
-            $table->string('content');
-            $table->string('prev_value')->nullable(true);
-            $table->string('current_value');
-            $table->integer('created_by')->nullable(true);
-
+            $table->string('course_name');
+            $table->string('course_code');
+            $table->text('description');
+            $table->enum('post_flag',['Y','N'])->default('N');
+            $table->enum('active_flag',['Y','N'])->default('Y');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('audit_trails');
+        Schema::dropIfExists('courses');
     }
 };

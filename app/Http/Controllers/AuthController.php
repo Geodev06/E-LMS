@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Helpers\Constants;
-use App\Models\Audit_trail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -38,12 +37,12 @@ class AuthController extends Controller
             User::create($data);
 
 
-            Audit_trail::create([
+            $this->audit_log([
                 'content' => 'Account created',
                 'activity' => Constants::AUDIT_INSERT,
                 'prev_value' => null,
                 'current_value' => $request->email,
-                'created_by' => Auth::user()->id ?? '99',
+                'created_by' => null,
             ]);
 
             DB::commit(); // Commit the transaction
@@ -73,14 +72,16 @@ class AuthController extends Controller
                 // Authentication passed
                 $user = Auth::user();
 
-                // Insert into the audit trail within the transaction
-                Audit_trail::create([
-                    'content' => $user->email . ' has logged in to the system.',
-                    'activity' => Constants::AUDIT_INSERT,
-                    'prev_value' => null,
-                    'current_value' => $user->email,
-                    'created_by' => $user->id,
-                ]);
+
+                $this->audit_log(
+                    [
+                        'content' => $user->email . ' has logged in to the system.',
+                        'activity' => Constants::AUDIT_INSERT,
+                        'prev_value' => null,
+                        'current_value' => $user->email,
+                        'created_by' => $user->id,
+                    ]
+                );
 
                 if ($user->role_code == 'ADMIN') {
                     DB::commit(); // Commit the transaction
@@ -107,7 +108,7 @@ class AuthController extends Controller
     {
         if (Auth::check()) {
 
-            Audit_trail::create([
+            $this->audit_log([
                 'content' => Auth::user()->email . ' has logged out from the system.',
                 'activity' => Constants::AUDIT_INSERT,
                 'prev_value' => Auth::user()->email,
